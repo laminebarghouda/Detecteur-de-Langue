@@ -61,9 +61,10 @@ public class Console {
     public void chercherLangue() {
         ArrayList<Mot> texte = this.mots;
         ArrayList<Mot> francais = new ArrayList<>();
-        ArrayList<Mot> anglais = new ArrayList<>();;
-        ArrayList<Mot> portugais = new ArrayList<>();;
-        ArrayList<Mot> allemand = new ArrayList<>();;
+        ArrayList<Mot> anglais = new ArrayList<>();
+        ArrayList<Mot> portugais = new ArrayList<>();
+        ArrayList<Mot> allemand = new ArrayList<>();
+        ArrayList<Mot> suedois = new ArrayList<>();
         try {
             // Preparer les textes de comparaison
             try {
@@ -72,6 +73,7 @@ public class Console {
                 anglais = compterOccurences(new File(getClass().getResource("/LanguesDeTest/en.txt").toURI()));
                 portugais = compterOccurences(new File(getClass().getResource("/LanguesDeTest/pt.txt").toURI()));
                 allemand = compterOccurences(new File(getClass().getResource("/LanguesDeTest/de.txt").toURI()));
+                suedois = compterOccurences(new File(getClass().getResource("/LanguesDeTest/sv.txt").toURI()));
             } catch (URISyntaxException e2) {
                 this.erreur="Impossible de trouver les fichiers de Test\n" + "Assurez vous que ces fichiers ne sont pas modifié et existant sous src/LanguesDeTest puis réessayez";
             }
@@ -84,6 +86,7 @@ public class Console {
             scores.add(new Double((float) calculPS(texte, anglais) / (texte.size() * anglais.size())));
             scores.add(new Double((float) calculPS(texte, portugais) / (texte.size() * portugais.size())));
             scores.add(new Double((float) calculPS(texte, allemand) / (texte.size() * allemand.size())));
+            scores.add(new Double((float) calculPS(texte, suedois) / (texte.size() * suedois.size())));
             // Faire la correspondance du texte à étudier aux langues connus
             Double lng = Collections.max(scores);
             // Le seuil d'approxiamtion pour les langues francais, anglais et portugais est mis à 0.017 après plusieurs expérience pour plus de précision
@@ -98,8 +101,11 @@ public class Console {
                     case 2:
                         this.langue = "Portugais";
                         break;
+                    case 4:
+                        this.langue = "Suedois";
+                        break;
                 }
-                // Le seuil d'approxiamtion pour la langue allemand est maintenu à 0.045
+                // Le seuil d'approxiamtion pour la langue allemand et suedois est maintenu à 0.045
             } else if (lng > 0.0045 && (scores.indexOf(lng) == 3)) {
                 this.langue = "Allemand";
             }
